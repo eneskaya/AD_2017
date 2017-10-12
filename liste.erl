@@ -13,7 +13,6 @@
 %       }
 %     }
 %   }
-%
 
 %% ---------------------------------------------
 %% Public API Methods
@@ -28,10 +27,13 @@ create() -> {}.
 isEmpty({}) -> true;
 isEmpty({_, _})  -> false.
 
-%% Return true, if the argument L is a list. Else return false.
+%% Return true, if the argument L is a list.
 %%
 isList({}) -> true;
-isList(L) -> not isEmpty(L). % TODO match recursive structure of list definition
+isList({H, T}) -> tupleMatch({H, T}) and isList(T).
+
+tupleMatch({NotTuple, Tuple}) ->
+  not is_tuple(NotTuple) and is_tuple(Tuple).
 
 %% Return true, if
 %% - L1 and L2 are both lists
@@ -40,7 +42,9 @@ isList(L) -> not isEmpty(L). % TODO match recursive structure of list definition
 %% Else return false.
 %%
 equal({}, {}) -> true;
-equal({Head1, Tail1}, {Head2, Tail2}) when Head1 == Head2 -> equal(Tail1,Tail2);
+equal({}, _) -> false;
+equal(_, {}) -> false;
+equal({Head1, Tail1}, {Head2, Tail2}) when Head1 == Head2 -> equal(Tail1, Tail2);
 equal({Head1, Tail1}, {Head2, Tail2}) when Head1 /= Head2 -> false.
 
 %% Returns the length of the list L, meaning the
@@ -74,31 +78,45 @@ delete(List, Position) ->
 
 %% Returns the position of Element in the list L.
 %%
-find({}, _) -> throw("Not Found amk");
-find({Head, _}, Element) when Head == Element -> 1;
-find({Head, Tail}, Element) -> 1 + find(Tail, Element).
+find({}, _) -> 0;
+find({Head, Tail}, Element) ->
+  Length = laenge({Head, Tail}),
+  find({Head, Tail}, Element, Length, 1).
+
+find({}, _, _, _) -> 0;
+find({Head, Tail}, Element, Length, Counter) ->
+  % io:format("Head: ~w, Element: ~w, Length: ~w, Counter: ~w\n", [Head, Element, Length, Counter]),
+  if
+    Head == Element ->
+      Counter;
+    Counter >= Length ->
+      0;
+    Head /= Element ->
+      IncrementedCounter = Counter + 1,
+      find(Tail, Element, Length, IncrementedCounter)
+  end.
 
 %% Returns the element at the given Position in the list L.
 %%
-retrieve({}, _) -> throw("Not Found amk");
+retrieve({}, _) -> throw(not_found);
 retrieve({Head, _}, 1) -> Head;
 retrieve({Head, Tail}, Position) -> retrieve(Tail, Position - 1).
 
 %% Returns a list containing elements of the lists L1 and L2 in
 %% their respective order.
 %%
-concat({}, {}) -> {};
-concat(L1, {}) -> L1;
-concat({}, L2) -> L2;
-concat(L1, L2) ->
-  {Head, Tail} = L2,
-  NewList = {},
-  NewList.
+concat({}, L) -> L;
+concat({H1, T1}, L) -> {H1, concat(T1, L)}.
 
 %% Returns a list cotaining all elements of L1 without elements of L2.
 %%
-diffListe(L1, L2) -> {};
+
+% 1 Go through L1
+% For each El of L1 check if is in L2.
+% If yes, delete of L1
 diffListe(L1, L2) -> {}.
+
+eoCount(L) -> {0,0}.
 
 %% ---------------------------------------------
 %% Private Methods
@@ -109,7 +127,7 @@ get_tail_from({_, Tail}, From) -> get_tail_from(Tail, From - 1).
 
 %% ---------------------------------------------
 
-print_list_elements({ Element, false }) -> io:format("~w\n", [Element]);
+print_list_elements({ Element, {} }) -> io:format("~w\n", [Element]);
 print_list_elements({ Element, Tail }) ->
   io:format("~w\n", [Element]),
   print_list_elements(Tail).
