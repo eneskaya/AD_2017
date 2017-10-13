@@ -87,10 +87,10 @@ find({}, _, _, _) -> 0;
 find({Head, Tail}, Element, Length, Counter) ->
   % io:format("Head: ~w, Element: ~w, Length: ~w, Counter: ~w\n", [Head, Element, Length, Counter]),
   if
-    Head == Element ->
-      Counter;
     Counter >= Length ->
       0;
+    Head == Element ->
+      Counter;
     Head /= Element ->
       IncrementedCounter = Counter + 1,
       find(Tail, Element, Length, IncrementedCounter)
@@ -110,11 +110,31 @@ concat({H1, T1}, L) -> {H1, concat(T1, L)}.
 
 %% Returns a list cotaining all elements of L1 without elements of L2.
 %%
+diffListe({}, {}) -> {};
+diffListe(L1, L2) ->
+  EqualLists = equal(L1, L2),
+  if
+     EqualLists ->
+       {};
+     not EqualLists ->
+       diffListe(L1, L2, create(), 1)
+  end.
 
-% 1 Go through L1
-% For each El of L1 check if is in L2.
-% If yes, delete of L1
-diffListe(L1, L2) -> {}.
+diffListe({}, _, List, _) -> List;
+diffListe(L1, L2, List, Counter) ->
+  io:format("BEFORE = L1: ~w, L2: ~w, List: ~w, Counter: ~w\n", [L1, L2, List, Counter]),
+  {H1, T1} = L1,
+  PositionInL2 = find(L2, H1),
+  if
+    PositionInL2 == 0 -> % If PositionInL2 is 0 it means H1 is NOT in L2 and we can insert it into our new list
+      NewList = insert(List, Counter, H1),
+      IncrementedCounter = Counter + 1,
+      diffListe(T1, L2, NewList, IncrementedCounter);
+    PositionInL2 /= 0 ->
+      diffListe(T1, L2, List, Counter)
+  end,
+  io:format("AFTER = L1: ~w, L2: ~w, List: ~w, Counter: ~w\n", [L1, L2, List, Counter]).
+
 
 eoCount(L) -> {0,0}.
 
