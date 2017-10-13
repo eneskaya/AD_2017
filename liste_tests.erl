@@ -29,9 +29,9 @@ isList_test() ->
   ?assert(liste:isList(?L1)),
   ?assert(liste:isList(?L2)),
   ?assert(liste:isList(?L3)),
-  ?assertNot(liste:isList({1, 2, 3})),
-  ?assertNot(liste:isList(a)),
-  ?assertNot(liste:isList(1)).
+  ?assertError(_, liste:isList({1, 2, 3})),
+  ?assertError(_, liste:isList(a)),
+  ?assertError(_, liste:isList(1)).
 
 laenge_test() ->
   ?assertEqual(0, liste:laenge(?L_EMPTY)),
@@ -62,7 +62,7 @@ retrieve_test() ->
   ?assertEqual(1, El1),
   El2 = liste:retrieve(?L2, 2),
   ?assertEqual(3, El2),
-  ?assertThrow("N/A", liste:retrieve(?L3, 1)). % not found case
+  ?assertThrow(not_found, liste:retrieve(?L3, 1)). % not found case
 
 concat_test() ->
   L_Concat = liste:concat(?L1, ?L2),

@@ -123,16 +123,14 @@ diffListe({}, _, List, _) -> List;
 diffListe(L1, L2, List, Counter) ->
   io:format("BEFORE = L1: ~w, L2: ~w, List: ~w, Counter: ~w\n", [L1, L2, List, Counter]),
   {H1, T1} = L1,
-  PositionInL2 = find(L2, H1),
+  FoundInL2 = (find(L2, H1) /= 0),
   if
-    PositionInL2 == 0 -> % If PositionInL2 is 0 it means H1 is NOT in L2 and we can insert it into our new list
-      NewList = insert(List, Counter, H1),
+    not FoundInL2 -> % If PositionInL2 is 0 it means H1 is NOT in L2 and we can insert it into our new list
       IncrementedCounter = Counter + 1,
-      diffListe(T1, L2, NewList, IncrementedCounter);
-    PositionInL2 /= 0 ->
+      diffListe(T1, L2, insert(List, Counter, H1), IncrementedCounter);
+    FoundInL2 ->
       diffListe(T1, L2, List, Counter)
-  end,
-  io:format("AFTER = L1: ~w, L2: ~w, List: ~w, Counter: ~w\n", [L1, L2, List, Counter]).
+  end.
 
 
 eoCount(L) -> {0,0}.
