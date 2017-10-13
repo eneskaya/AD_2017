@@ -2,7 +2,7 @@
 %% @author Enes Kaya
 -module (liste).
 -export ([create/0, isEmpty/1, isList/1, equal/2, laenge/1, insert/3,
-          delete/2, find/2, retrieve/2, concat/2, diffListe/2, get_tail_from/2]).
+          delete/2, find/2, retrieve/2, concat/2, diffListe/2]).
 
 % Structure of List with N Elements
 %
