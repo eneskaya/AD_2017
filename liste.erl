@@ -32,8 +32,7 @@ isEmpty({_, _})  -> false.
 isList({}) -> true;
 isList({H, T}) -> tupleMatch({H, T}) and isList(T).
 
-tupleMatch({NotTuple, Tuple}) ->
-  not is_tuple(NotTuple) and is_tuple(Tuple).
+tupleMatch({NotTuple, Tuple}) -> is_tuple(Tuple).
 
 %% Return true, if
 %% - L1 and L2 are both lists
@@ -87,7 +86,7 @@ find({}, _, _, _) -> 0;
 find({Head, Tail}, Element, Length, Counter) ->
   % io:format("Head: ~w, Element: ~w, Length: ~w, Counter: ~w\n", [Head, Element, Length, Counter]),
   if
-    Counter >= Length ->
+    Counter > Length ->
       0;
     Head == Element ->
       Counter;
