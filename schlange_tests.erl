@@ -28,4 +28,9 @@ front_test() ->
   Q2 = schlange:enqueue(Q1, 2),
   Q3 = schlange:dequeue(Q2),
   Front = schlange:front(Q3),
-  ?assertEqual(2, Front).
+  ?assertEqual(2, Front),
+  Q4 = schlange:enqueue(Q3, 3),
+  Q5 = schlange:enqueue(Q4, 4),
+  Q6 = schlange:dequeue(Q5),
+  Front1 = schlange:front(Q6),
+  ?assertEqual(3, Front1).

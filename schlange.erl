@@ -11,9 +11,9 @@ enqueue({In, Out}, Element) ->
   NewIn = stack:push(In, Element),
   {NewIn, Out}.
 
-dequeue({{}, Out}) -> {stack:createS(), stack:pop(Out)};
+dequeue({{}, {}}) -> createQ();
 dequeue({In, {}}) -> {stack:createS(), stack:pop(stack:reverseS(In))};
-dequeue({{}, {}}) -> createQ().
+dequeue({In, Out}) -> {In, stack:pop(Out)}.
 
 isEmptyQ({In, Out}) ->
   InIsEmpty = stack:isEmptyS(In),
@@ -25,6 +25,6 @@ equalQ({In1, Out1}, {In2, Out2}) ->
   OutStacksAreEqual = stack:equalS(Out1, Out2),
   InStacksAreEqual and OutStacksAreEqual.
 
-front({{}, Out}) -> stack:top(Out);
+front({{}, {}}) -> throw(queue_empty);
 front({In, {}}) -> stack:top(stack:reverseS(In));
-front({{}, {}}) -> throw(queue_empty).
+front({_, Out}) -> stack:top(Out).
