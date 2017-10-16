@@ -2,7 +2,7 @@
 %% @author Enes Kaya
 -module (liste).
 -export ([create/0, isEmpty/1, isList/1, equal/2, laenge/1, insert/3,
-          delete/2, find/2, retrieve/2, concat/2, diffListe/2]).
+          delete/2, find/2, retrieve/2, concat/2, diffListe/2, eoCount/1]).
 
 % Structure of List with N Elements
 %
@@ -32,7 +32,7 @@ isEmpty({_, _})  -> false.
 isList({}) -> true;
 isList({H, T}) -> tupleMatch({H, T}) and isList(T).
 
-tupleMatch({NotTuple, Tuple}) -> is_tuple(Tuple).
+tupleMatch({_, Tuple}) -> is_tuple(Tuple).
 
 %% Return true, if
 %% - L1 and L2 are both lists
@@ -44,7 +44,7 @@ equal({}, {}) -> true;
 equal({}, _) -> false;
 equal(_, {}) -> false;
 equal({Head1, Tail1}, {Head2, Tail2}) when Head1 == Head2 -> equal(Tail1, Tail2);
-equal({Head1, Tail1}, {Head2, Tail2}) when Head1 /= Head2 -> false.
+equal({Head1, _}, {Head2, _}) when Head1 /= Head2 -> false.
 
 %% Returns the length of the list L, meaning the
 %% count of elements it contains.
@@ -70,7 +70,7 @@ insert(List, Position, Element) ->
 
 delete({}, _) -> {};
 delete({_, {}}, _) -> {};
-delete({Head, Tail}, 1) -> Tail;
+delete({_, Tail}, 1) -> Tail;
 delete(List, Position) ->
   {Head, Tail} = List,
   {Head, delete(Tail, Position - 1)}.
@@ -99,7 +99,7 @@ find({Head, Tail}, Element, Length, Counter) ->
 %%
 retrieve({}, _) -> throw(not_found);
 retrieve({Head, _}, 1) -> Head;
-retrieve({Head, Tail}, Position) -> retrieve(Tail, Position - 1).
+retrieve({_, Tail}, Position) -> retrieve(Tail, Position - 1).
 
 %% Returns a list containing elements of the lists L1 and L2 in
 %% their respective order.
@@ -133,18 +133,4 @@ diffListe(L1, L2, List, Counter) ->
   end.
 
 
-eoCount(L) -> {0,0}.
-
-%% ---------------------------------------------
-%% Private Methods
-%% ---------------------------------------------
-
-get_tail_from({_, Tail}, 1) -> Tail;
-get_tail_from({_, Tail}, From) -> get_tail_from(Tail, From - 1).
-
-%% ---------------------------------------------
-
-print_list_elements({ Element, {} }) -> io:format("~w\n", [Element]);
-print_list_elements({ Element, Tail }) ->
-  io:format("~w\n", [Element]),
-  print_list_elements(Tail).
+eoCount(_) -> {0,0}.
