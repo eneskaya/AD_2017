@@ -113,4 +113,6 @@ isEmptyBT(_) -> false.
 
 % ---------- equalBT ----------
 
+equalBT({}, {}) -> true;
+equalBT({E, H, L1, R1}, {E, H, L2, R2}) -> equalBT(L1, L2) and equalBT(R1, R2);
 equalBT(_, _) -> false.
