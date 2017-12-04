@@ -115,7 +115,6 @@ equalBT(_, _) -> false.
 
 % ---------- printBT ----------
 
-%% Leerer Baum wird einfach ausgegeben mit Head und Foot.
 printBT(Filename, {}) ->
   writeHead(Filename),
   writeFoot(Filename);
@@ -128,7 +127,6 @@ printBT(Filename, BTree) ->
       writeFoot(Filename);
     true -> nil
   end.
-
 
 startPrint(_, {}) ->
   io:fwrite("Matched startPrint(_, {})~n");
@@ -156,10 +154,10 @@ startPrint(Filename, {X, _, Left, Right}) ->
   startPrint(Filename, Left),
   startPrint(Filename, Right).
 
-
 writeHead(Filename) -> util:logging(Filename, "digraph avltree \n{\n").
 writeFoot(Filename) -> util:logging(Filename, "}\n").
 
+%% Siehe String Interpolation
 %% https://rosettacode.org/wiki/String_interpolation_(included)#Erlang
 writeLine(Filename, {N1, N2}, Label) ->
   StringN1 = integer_to_list(N1),
