@@ -25,15 +25,19 @@ isBT({Value, Height, Left, Right}) ->
       HeightCorrect = Height == L_H + 1;
     true -> HeightCorrect = (max(L_H, R_H) + 1) == Height
   end,
-  HeightCorrect and ValueCorrect and isBT(Left) and isBT(Right).
+  balanceIsValid({Value, Height, Left, Right}) and HeightCorrect and ValueCorrect and isBT(Left) and isBT(Right).
 
 % ---------- Rotationen ----------
 
-% linksRotation() -> nil.
+linksRotation(Node) -> io:fwrite("linksRotation ~n", []), Node.
 
-% rechtsRotation() -> nil.
-% doppeltLinksRotation() -> nil. %% Rechts-Links-Rotation
-% doppeltRechtsRotation() -> nil. %% Links-Rechts-Rotation
+rechtsRotation(Node) -> io:fwrite("rechtsRotation ~n", []), Node.
+
+%% Rechts-Links-Rotation
+doppeltLinksRotation(Node) -> io:fwrite("doppeltLinksRotation ~n", []), Node.
+
+%% Links-Rechts-Rotation
+doppeltRechtsRotation(Node) -> io:fwrite("doppeltRechtsRotation ~n", []), Node. 
 
 % ---------- insertBT ----------
 
@@ -60,46 +64,50 @@ insertBT({E, H, Left, Right}, N) ->
         NewRightTree = insertBT(Right, N),
         {_, Height} = getValueAndHeight(NewRightTree),
         if
-          H == Height -> NewHeight = Height + 1;
-          true -> NewHeight = H
-        end,
-        io:fwrite("---------- HEIGHT: ~p, balanceIsValid: ~p ~n", [NewHeight, balanceIsValid(Left, NewRightTree)]),
-        {E, NewHeight, Left, NewRightTree};
+          H == Height ->
+            NewHeight = Height + 1,
+            %% Falls die Höhe sich geändert hat, wird überprüft, ob eine Rebalancierung
+            %% notwendig ist und ggf. durch Anwendung von Rotationen ausgeführt.
+            checkAndRebalance({E, NewHeight, Left, NewRightTree});
+          true -> {E, H, Left, NewRightTree}
+        end;
       %% Füge Links hinzu:
       N < E ->
         NewLeftTree = insertBT(Left, N),
         {_, Height} = getValueAndHeight(NewLeftTree),
         if
-          H == Height -> NewHeight = Height + 1;
-          true -> NewHeight = H
-        end,
-        io:fwrite("---------- HEIGHT: ~p, balanceIsValid: ~p ~n", [NewHeight, balanceIsValid(NewLeftTree, Right)]),
-        {E, NewHeight, NewLeftTree, Right};
+          H == Height -> 
+            NewHeight = Height + 1,
+            %% s.o.
+            checkAndRebalance({E, NewHeight, NewLeftTree, Right});
+          true -> {E, H, NewLeftTree, Right}
+        end;
       %% Alle anderen Fälle werden ignoriert
       true -> {E, H, Left, Right}
     end
   end.
-  
-% ---------- Hilfs-Funktionen ----------
 
-getValueAndHeight({}) -> {nil, 0};
-getValueAndHeight({Value, Height, _, _}) -> {Value, Height}.
+%% Überprüft die Notwendigkeit einer Rebalancierung und führt diese ggf. aus.
 
-%% Value ist größer als LeftValue aber kleiner als RightValue
-middle(Value, nil, RightValue) -> Value < RightValue;
-middle(Value, LeftValue, nil) -> Value > LeftValue;
-middle(Value, LeftValue, RightValue) ->
-  (LeftValue < Value) and (RightValue > Value).
-
-%% Gibt den Balance Faktor für einen (Teil-) Baum zurück.
-balanceFaktor({}, {}) -> 0;
-balanceFaktor({_, HL, _, _}, {}) -> HL - 0;
-balanceFaktor({}, {_, HR, _, _}) -> 0 - HR;
-balanceFaktor({_, HL, _, _}, {_, HR, _, _}) -> HR - HL.
-
-balanceIsValid(L, R) ->
-  Faktor = abs(balanceFaktor(L, R)),
-  Faktor =< 1.
+checkAndRebalance({ E, H, L, R }) ->
+  B_Ober = balanceFaktor({ E, H, L, R }),
+  if
+    B_Ober == -2 ->
+      %% Rebalancierung im linken Teilbaum notwendig
+      B_Unter = balanceFaktor(L),
+      if
+        B_Unter == -1 -> rechtsRotation({ E, H, L, R });
+        B_Unter == 1 -> doppeltRechtsRotation({ E, H, L, R })
+      end;
+    B_Ober == 2 ->
+      %% Rebalancierung im rechten Teilbaum notwendig
+      B_Unter = balanceFaktor(R),
+      if
+        B_Unter == -1 -> doppeltLinksRotation({ E, H, L, R });
+        B_Unter == 1 -> linksRotation({ E, H, L, R })
+      end;
+    true -> { E, H, L, R }
+  end.
 
 % ---------- isEmptyBT ----------
 
@@ -160,3 +168,24 @@ printBT(Filename, BTree) ->
       writeFoot(Filename);
     true -> nil
   end.
+
+% ---------- Hilfs-Funktionen ----------
+
+getValueAndHeight({}) -> {nil, 0};
+getValueAndHeight({Value, Height, _, _}) -> {Value, Height}.
+
+%% Value ist größer als LeftValue aber kleiner als RightValue
+middle(Value, nil, RightValue) -> Value < RightValue;
+middle(Value, LeftValue, nil) -> Value > LeftValue;
+middle(Value, LeftValue, RightValue) ->
+  (LeftValue < Value) and (RightValue > Value).
+
+%% Gibt den Balance Faktor für einen (Teil-) Baum zurück.
+
+balanceFaktor({}) -> 0;
+balanceFaktor({ _, _, {}, {}}) -> 0;
+balanceFaktor({ _, _, {_, HL, _, _}, {}}) -> 0 - HL;
+balanceFaktor({ _, _, {}, {_, HR, _, _}}) -> HR - 0;
+balanceFaktor({ _, _, {_, HL, _, _}, {_, HR, _, _}}) -> HR - HL.
+
+balanceIsValid(Node) -> (abs(balanceFaktor(Node)) =< 1).

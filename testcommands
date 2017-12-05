@@ -1,0 +1,12 @@
+%% Rechtsrotation
+
+f().
+c(avltree).
+B = avltree:insertBT({}, 15).
+B1 = avltree:insertBT(B, 8).
+B2 = avltree:insertBT(B1, 2).
+
+B3 = avltree:insertBT(B2, 39).
+B4 = avltree:insertBT(B3, 62).
+
+B5 = avltree:insertBT(B4, 80).
