@@ -1,51 +1,15 @@
--module (btree).
--export ([
-          initBT/0, isBT/1, insertBT/2, 
-          isEmptyBT/1, equalBT/2, printBT/2]).
+-module (avltree).
+-export ([initBT/0, isBT/1, insertBT/2, isEmptyBT/1, equalBT/2, printBT/2]).
 
-% Beispiel B-Baum:
-%
-%               16
-%              /   \
-%            14     18
-%           /  \      \
-%          9   15     23
-%                    /
-%                   22
-%
-%
-% Tuple Repräsentation:
-%
-% {16, 3,
-%   {14, 2,
-%     {9, 1
-%       {},
-%       {}
-%     },
-%     {15, 1,
-%       {},
-%       {}
-%     }
-%   },
-%   {18, 2,
-%     {},
-%     {23, 2,
-%       {22, 4,
-%         {},
-%         {}
-%       }
-%     }
-%   }
-% }
+% ---------- initBT ----------
 
 initBT() -> {}.
 
-
 % ---------- isBT ----------
 
-%% Leerer Baum ist ein Baum.
+%% Leerer Baum ist ein AVL Baum.
 isBT({}) -> true;
-%% Ein Baum nur mit Wurzel und Höhe == 1 ist ein Baum.
+%% Ein Baum nur mit Wurzel und Höhe == 1 ist ein AVL Baum.
 isBT({_, H, {}, {}}) -> H == 1;
 %% Alles andere muss überprüft werden.
 isBT({Value, Height, Left, Right}) ->
@@ -63,6 +27,51 @@ isBT({Value, Height, Left, Right}) ->
   end,
   HeightCorrect and ValueCorrect and isBT(Left) and isBT(Right).
 
+% ---------- insertBT ----------
+
+%% Einfügen in leeren Baum
+insertBT({}, N) ->
+    % io:fwrite("---------- Inserting ~p in {} ---------- ~n", [N]),
+    Type = util:type_is(N),
+  if
+    Type /= integer -> {};
+    true -> {N, 1, {}, {}}
+  end;
+
+insertBT({E, H, Left, Right}, N) ->
+  Type = util:type_is(N),
+  if
+    %% Prüfe zu aller erst ob einzufügender Wert ein Integer ist.
+    %% Falls nicht, gib den Baum so zurück wie er reinkommt.
+    Type /= integer -> {E, H, Left, Right};
+    true ->
+      % io:fwrite("---------- Inserting ~p in ~w ----------", [N, {E, H, Left, Right}]),
+      if
+      %% Füge Rechts hinzu:
+      N > E ->
+        NewRightTree = insertBT(Right, N),
+        {_, Height} = getValueAndHeight(NewRightTree),
+        if
+          H == Height -> NewHeight = Height + 1;
+          true -> NewHeight = H
+        end,
+        {E, NewHeight, Left, NewRightTree};
+      %% Füge Links hinzu:
+      N < E ->
+        NewLeftTree = insertBT(Left, N),
+        {_, Height} = getValueAndHeight(NewLeftTree),
+        if
+          H == Height -> NewHeight = Height + 1;
+          true -> NewHeight = H
+        end,
+        {E, NewHeight, NewLeftTree, Right};
+      %% Alle anderen Fälle werden ignoriert
+      true -> {E, H, Left, Right}
+    end
+  end.
+  
+% ---------- Hilfs-Funktionen ----------
+
 getValueAndHeight({}) -> {nil, 0};
 getValueAndHeight({Value, Height, _, _}) -> {Value, Height}.
 
@@ -72,40 +81,10 @@ middle(Value, LeftValue, nil) -> Value > LeftValue;
 middle(Value, LeftValue, RightValue) ->
   (LeftValue < Value) and (RightValue > Value).
 
-% ---------- insertBT ----------
-
-%% Einfügen in leeren Baum
-insertBT({}, N) -> {N, 1, {}, {}};
-insertBT({E, H, Left, Right}, N) ->
-  if
-    %% Füge Rechts hinzu:
-    N > E ->
-      NewRightTree = insertBT(Right, N),
-      {_, Height} = getValueAndHeight(NewRightTree),
-      if
-        H == Height ->
-          NewHeight = Height + 1;
-        true -> NewHeight = H
-      end,
-      {E, NewHeight, Left, NewRightTree};
-    %% Füge Links hinzu:
-    N < E ->
-      NewLeftTree = insertBT(Left, N),
-      {_, Height} = getValueAndHeight(NewLeftTree),
-      if
-        H == Height ->
-          NewHeight = Height + 1;
-        true -> NewHeight = H
-      end,
-      {E, NewHeight, NewLeftTree, Right};
-    %% Ignorieren
-    true -> {E, H, Left, Right}
-  end.
-
 % ---------- isEmptyBT ----------
 
 isEmptyBT({}) -> true;
-isEmptyBT(B) -> isBT(B) and false.
+isEmptyBT(_) -> false.
 
 % ---------- equalBT ----------
 
@@ -115,33 +94,16 @@ equalBT(_, _) -> false.
 
 % ---------- printBT ----------
 
-printBT(Filename, {}) ->
-  writeHead(Filename),
-  writeFoot(Filename);
-printBT(Filename, BTree) ->
-  IsBT = isBT(BTree),
-  if
-    IsBT -> 
-      writeHead(Filename),
-      startPrint(Filename, BTree),
-      writeFoot(Filename);
-    true -> nil
-  end.
+startPrint(_, {}) -> nil;
 
-startPrint(_, {}) ->
-  io:fwrite("Matched startPrint(_, {})~n");
-
-startPrint(_, {_, _, {}, {}}) ->
-  io:fwrite("Matched startPrint(_, {_, _, {}, {}})~n");
+startPrint(_, {_, _, {}, {}}) -> nil;
 
 startPrint(Filename, {X, _, {}, Right}) ->
-  io:fwrite("Matched startPrint(Filename, {X, _, {}, Right})~n"),
   { RightNodeValue, RightNodeHeight, _, _ } = Right,
   writeLine(Filename, {X, RightNodeValue}, RightNodeHeight),
   startPrint(Filename, Right);
 
 startPrint(Filename, {X, _, Left, {}}) ->
-  io:fwrite("Matched startPrint(Filename, {X, _, Left, {}})~n"),
   { LeftNodeValue, LeftNodeHeight, _, _ } = Left,
   writeLine(Filename, {X, LeftNodeValue}, LeftNodeHeight),
   startPrint(Filename, Left);
@@ -157,12 +119,24 @@ startPrint(Filename, {X, _, Left, Right}) ->
 writeHead(Filename) -> util:logging(Filename, "digraph avltree \n{\n").
 writeFoot(Filename) -> util:logging(Filename, "}\n").
 
-%% Siehe String Interpolation
-%% https://rosettacode.org/wiki/String_interpolation_(included)#Erlang
 writeLine(Filename, {N1, N2}, Label) ->
-  StringN1 = integer_to_list(N1),
-  StringN2 = integer_to_list(N2),
-  StringLabel = integer_to_list(Label),
+  StringN1 = util:to_String(N1),
+  StringN2 = util:to_String(N2),
+  StringLabel = util:to_String(Label),
   S = "~s -> ~s [label = ~s];~n",
   Formatted = lists:flatten(io_lib:format(S, [StringN1, StringN2, StringLabel])),
   util:logging(Filename, Formatted).
+
+printBT(Filename, {}) ->
+  writeHead(Filename),
+  writeFoot(Filename);
+
+printBT(Filename, BTree) ->
+  IsBT = isBT(BTree),
+  if
+    IsBT -> 
+      writeHead(Filename),
+      startPrint(Filename, BTree),
+      writeFoot(Filename);
+    true -> nil
+  end.
