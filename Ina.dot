@@ -1,7 +1,0 @@
-digraph avltree 
-{
-22 -> 1 [label = 2];
-22 -> 85 [label = 2];
-1 -> 7 [label = 1];
-85 -> 189 [label = 1];
-}

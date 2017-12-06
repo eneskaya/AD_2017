@@ -34,13 +34,19 @@ isBT({Value, Height, Left, Right}) ->
 
 % ---------- Rotationen ----------
 
-linksRotation(Node) ->
+linksRotation({ E, H, _, R }) ->
+  { RE, _, _, RR } = R,
+  NewLeftNode = { E, 1, {}, {} },
+  NewNode = { RE, H - 1, NewLeftNode, RR },
   incrementGlobalVar(?LEFTROTATE),
-  Node.
+  NewNode.
 
-rechtsRotation(Node) ->
+rechtsRotation({ E, H, L, _ }) ->
+  { LE, _, LL, _ } = L,
+  NewRightNode = { E, 1, {}, {} },
+  NewNode = { LE, H - 1, LL, NewRightNode },
   incrementGlobalVar(?RIGHTROTATE),
-  Node.
+  NewNode.
 
 %% Rechts-Links-Rotation
 doppeltLinksRotation(Node) ->
