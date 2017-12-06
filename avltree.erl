@@ -1,5 +1,6 @@
 -module (avltree).
 -export ([initBT/0, isBT/1, insertBT/2, isEmptyBT/1, equalBT/2, printBT/2]).
+-include_lib("eunit/include/eunit.hrl").
 
 -define(LEFTROTATE, leftrotate).
 -define(RIGHTROTATE, rightrotate).
@@ -64,7 +65,6 @@ doppeltRechtsRotation(Node) ->
 
 %% Einfügen in leeren Baum
 insertBT({}, N) ->
-    % io:fwrite("---------- Inserting ~p in {} ---------- ~n", [N]),
     Type = util:type_is(N),
   if
     Type /= integer -> {};
@@ -78,7 +78,6 @@ insertBT({E, H, Left, Right}, N) ->
     %% Falls nicht, gib den Baum so zurück wie er reinkommt.
     Type /= integer -> {E, H, Left, Right};
     true ->
-      % io:fwrite("---------- Inserting ~p in ~w ----------", [N, {E, H, Left, Right}]),
       if
       %% Füge Rechts hinzu:
       N > E ->
@@ -223,3 +222,28 @@ balanceFaktor({ _, _, {}, {_, HR, _, _}}) -> HR - 0;
 balanceFaktor({ _, _, {_, HL, _, _}, {_, HR, _, _}}) -> HR - HL.
 
 balanceIsValid(Node) -> (abs(balanceFaktor(Node)) =< 1).
+
+% ---------- Tests ----------
+
+balanceFaktor_test() ->
+  B = initBT(),
+  B1 = insertBT(B, 15),
+  B2 = insertBT(B1, 8),
+  ?assertEqual(balanceFaktor(B), 0),
+  ?assertEqual(balanceFaktor(B1), 0),
+  ?assertEqual(balanceFaktor(B2), -1),
+  B3 = insertBT(B2, 2),
+  ?assertEqual(balanceFaktor(B3), 0).
+
+getValueAndHeight_test() ->
+  B = initBT(),
+  B1 = insertBT(B, 15),
+  B2 = insertBT(B1, 8),
+  ?assertEqual(getValueAndHeight(B), {nil, 0}),
+  ?assertEqual(getValueAndHeight(B1), {15, 1}),
+  ?assertEqual(getValueAndHeight(B2), {15, 2}).
+
+middle_test() ->
+  ?assertNot(middle(50, 100, 0)),
+  ?assert(middle(50, 0, 100)),
+  ?assertNot(middle(0, 0, 0)).

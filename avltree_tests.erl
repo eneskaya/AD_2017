@@ -6,7 +6,7 @@ isBT_test() ->
   B = {},
   %% Inkorrekter AVL Tree, imbalance
   B1 = {12, 3, {}, {23, 2, {19, 1, {}, {}}, {}}},
-  %% Korrekter BT
+  %% Korrekter AVL Tree
   B2 = {12, 3, {6, 1, {}, {}}, {23, 2, {19, 1, {}, {}}, {}}},
   ?assert(avltree:isBT(B)),
   ?assertNot(avltree:isBT(B1)),
