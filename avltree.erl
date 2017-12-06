@@ -1,6 +1,11 @@
 -module (avltree).
 -export ([initBT/0, isBT/1, insertBT/2, isEmptyBT/1, equalBT/2, printBT/2]).
 
+-define(LEFTROTATE, leftrotate).
+-define(RIGHTROTATE, rightrotate).
+-define(DDLEFTROTATE, ddleftrotate).
+-define(DDRIGHTROTATE, ddrightrotate).
+
 % ---------- initBT ----------
 
 initBT() -> {}.
@@ -29,15 +34,25 @@ isBT({Value, Height, Left, Right}) ->
 
 % ---------- Rotationen ----------
 
-linksRotation(Node) -> io:fwrite("linksRotation ~n", []), Node.
+linksRotation(Node) ->
+  incrementGlobalVar(?LEFTROTATE),
+  Node.
 
-rechtsRotation(Node) -> io:fwrite("rechtsRotation ~n", []), Node.
+rechtsRotation(Node) ->
+  incrementGlobalVar(?RIGHTROTATE),
+  Node.
 
 %% Rechts-Links-Rotation
-doppeltLinksRotation(Node) -> io:fwrite("doppeltLinksRotation ~n", []), Node.
+doppeltLinksRotation(Node) ->
+  incrementGlobalVar(?DDLEFTROTATE),
+  incrementGlobalVar(?LEFTROTATE, 2),
+  Node.
 
 %% Links-Rechts-Rotation
-doppeltRechtsRotation(Node) -> io:fwrite("doppeltRechtsRotation ~n", []), Node. 
+doppeltRechtsRotation(Node) ->
+  incrementGlobalVar(?DDRIGHTROTATE),
+  incrementGlobalVar(?RIGHTROTATE, 2),
+  Node. 
 
 % ---------- insertBT ----------
 
@@ -97,14 +112,16 @@ checkAndRebalance({ E, H, L, R }) ->
       B_Unter = balanceFaktor(L),
       if
         B_Unter == -1 -> rechtsRotation({ E, H, L, R });
-        B_Unter == 1 -> doppeltRechtsRotation({ E, H, L, R })
+        B_Unter == 1 -> doppeltRechtsRotation({ E, H, L, R });
+        true -> { E, H, L, R } %% TODO Dieser Fall darf nicht auftreten
       end;
     B_Ober == 2 ->
       %% Rebalancierung im rechten Teilbaum notwendig
       B_Unter = balanceFaktor(R),
       if
         B_Unter == -1 -> doppeltLinksRotation({ E, H, L, R });
-        B_Unter == 1 -> linksRotation({ E, H, L, R })
+        B_Unter == 1 -> linksRotation({ E, H, L, R });
+        true -> { E, H, L, R } %% TODO Dieser Fall darf nicht auftreten
       end;
     true -> { E, H, L, R }
   end.
@@ -170,6 +187,17 @@ printBT(Filename, BTree) ->
   end.
 
 % ---------- Hilfs-Funktionen ----------
+
+
+incrementGlobalVar(Globalvar, Step) ->
+  Known = util:getglobalvar(Globalvar),
+  if
+    Known == nil -> util:setglobalvar(Globalvar, 0);
+    Known /= nil -> util:setglobalvar(Globalvar, Known + Step)
+  end.
+
+incrementGlobalVar(Globalvar) ->
+  incrementGlobalVar(Globalvar, 1).
 
 getValueAndHeight({}) -> {nil, 0};
 getValueAndHeight({Value, Height, _, _}) -> {Value, Height}.

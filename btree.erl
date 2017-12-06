@@ -1,5 +1,5 @@
--module (avltree).
--export ([initBT/0, isBT/1, insertBT/2, isEmptyBT/1, equalBT/2, printBT/2]).
+-module (btree).
+-export ([initBT/0, isBT/1, insertBT/2, isEmptyBT/1, equalBT/2, printBT/2, insertNum/1]).
 
 % ---------- initBT ----------
 
@@ -140,3 +140,12 @@ printBT(Filename, BTree) ->
       writeFoot(Filename);
     true -> nil
   end.
+
+insertRek(BTree, []) -> BTree;
+insertRek(BTree, [H|T]) -> insertRek(insertBT(BTree, H), T).
+
+insertNum(Num) ->
+  List = util:randomliste(Num),
+  B = initBT(),
+  B_Big = insertRek(B, List),
+  B_Big.
