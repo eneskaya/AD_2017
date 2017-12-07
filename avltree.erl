@@ -1,5 +1,7 @@
 -module (avltree).
--export ([initBT/0, isBT/1, insertBT/2, isEmptyBT/1, equalBT/2, printBT/2]).
+-export ([initBT/0, isBT/1, insertBT/2, 
+          isEmptyBT/1, equalBT/2, printBT/2]).
+
 -include_lib("eunit/include/eunit.hrl").
 
 -define(LEFTROTATE, leftrotate).

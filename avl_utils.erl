@@ -1,5 +1,5 @@
 -module(avl_utils).
--export([getAVLTree/1, print/0, printCounters/0, resetCounters/0]).
+-compile(export_all).
 
 -import(avltree, [initBT/0, insertBT/2, printBT/2]).
 -import(util, [randomliste/1]).
@@ -31,6 +31,13 @@ printCounters() ->
     io:fwrite(S, [ Leftrotates, Rightrotates ]),
     io:fwrite(SD, [ DDLeftrotates, DDRightrotates ]).
 
+getCountersTuple() ->
+    {
+        util:getglobalvar(?LEFTROTATE),
+        util:getglobalvar(?RIGHTROTATE),
+        util:getglobalvar(?DDRIGHTROTATE),
+        util:getglobalvar(?DDLEFTROTATE)
+    }.
 
 resetCounters() ->
     util:globalvarreset(?LEFTROTATE),
