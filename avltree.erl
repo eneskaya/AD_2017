@@ -38,7 +38,7 @@ isBT({Value, Height, Left, Right}) ->
 linksRotation({ E, _, L, R }) ->
   % io:fwrite("linksRotation ~n"),
   { RE, _, RL, RR } = R,
-  NewLeftNode = { E, 1, L, RL },
+  NewLeftNode = { E, berechneHoehe(L, RL), L, RL },
   NewNode = { RE, berechneHoehe(NewLeftNode, RR), NewLeftNode, RR },
   incrementGlobalVar(?LEFTROTATE),
   NewNode.
