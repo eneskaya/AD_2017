@@ -1,6 +1,8 @@
 -module(avltree_tests).
 -include_lib("eunit/include/eunit.hrl").
 
+-import(avl_utils, [getAVLTree/1]).
+
 isBT_test() ->
   %% Korreter AVL Tree
   B = {},
@@ -26,6 +28,10 @@ insertion_test() ->
   %% Doppelter insert wird ignoriert (Bäume sind immer noch gleich)
   B4 = avltree:insertBT(B3, 25),
   ?assert(avltree:equalBT(B4, B3)).
+
+insertionBig_test() ->
+  Big = avl_utils:getAVLTree(100000),
+  ?assert(avltree:isBT(Big)).
 
 printBT_test() ->
   B = avltree:initBT(),

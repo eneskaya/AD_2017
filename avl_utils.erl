@@ -1,5 +1,5 @@
--module(avltree_test_env).
--export([getAVLTree/1, print/0, printCounters/0]).
+-module(avl_utils).
+-export([getAVLTree/1, print/0, printCounters/0, resetCounters/0]).
 
 -import(avltree, [initBT/0, insertBT/2, printBT/2]).
 -import(util, [randomliste/1]).

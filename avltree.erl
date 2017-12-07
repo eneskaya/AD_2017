@@ -35,28 +35,34 @@ isBT({Value, Height, Left, Right}) ->
 
 % ---------- Rotationen ----------
 
-linksRotation({ E, H, _, R }) ->
-  { RE, _, _, RR } = R,
-  NewLeftNode = { E, 1, {}, {} },
-  NewNode = { RE, H - 1, NewLeftNode, RR },
+linksRotation({ E, _, L, R }) ->
+  % io:fwrite("linksRotation ~n"),
+  { RE, _, RL, RR } = R,
+  NewLeftNode = { E, 1, L, RL },
+  NewNode = { RE, berechneHoehe(NewLeftNode, RR), NewLeftNode, RR },
   incrementGlobalVar(?LEFTROTATE),
   NewNode.
 
-rechtsRotation({ E, H, L, _ }) ->
-  { LE, _, LL, _ } = L,
-  NewRightNode = { E, 1, {}, {} },
-  NewNode = { LE, H - 1, LL, NewRightNode },
+rechtsRotation({ E, _, L, R }) ->
+  % io:fwrite("rechtsRotation ~n"),
+  { LE, _, LL, LR } = L,
+  NewRightNode = { E, berechneHoehe(LR, R), LR, R },
+  NewNode = { LE,  berechneHoehe(LL, NewRightNode), LL, NewRightNode },
   incrementGlobalVar(?RIGHTROTATE),
   NewNode.
 
-%% Rechts-Links-Rotation
-doppeltLinksRotation(Node) ->
+%% Rechts-Links-Rotation:
+%% Zuerst rechtsRotation von R, dann linksRotation von {E, H, L, R}
+doppeltLinksRotation({E, H, L, R}) ->
+  Node = linksRotation({ E, H, L, rechtsRotation(R) }),
   incrementGlobalVar(?DDLEFTROTATE),
   incrementGlobalVar(?LEFTROTATE, 2),
   Node.
 
-%% Links-Rechts-Rotation
-doppeltRechtsRotation(Node) ->
+%% Links-Rechts-Rotation:
+%% Zuerst linksRotation von L, dann rechtsRotation {E, H, L, R}
+doppeltRechtsRotation({E, H, L, R}) ->
+  Node = rechtsRotation({ E, H, linksRotation(L), R }),
   incrementGlobalVar(?DDRIGHTROTATE),
   incrementGlobalVar(?RIGHTROTATE, 2),
   Node. 
@@ -86,7 +92,7 @@ insertBT({E, H, Left, Right}, N) ->
         if
           H == Height ->
             NewHeight = Height + 1,
-            %% Falls die Höhe sich geändert hat, wird überprüft, ob eine Rebalancierung
+            %% Falls sich die Höhe geändert hat, wird überprüft, ob eine Rebalancierung
             %% notwendig ist und ggf. durch Anwendung von Rotationen ausgeführt.
             checkAndRebalance({E, NewHeight, Left, NewRightTree});
           true -> {E, H, Left, NewRightTree}
@@ -96,7 +102,7 @@ insertBT({E, H, Left, Right}, N) ->
         NewLeftTree = insertBT(Left, N),
         {_, Height} = getValueAndHeight(NewLeftTree),
         if
-          H == Height -> 
+          H == Height ->
             NewHeight = Height + 1,
             %% s.o.
             checkAndRebalance({E, NewHeight, NewLeftTree, Right});
@@ -178,18 +184,15 @@ writeLine(Filename, {N1, N2}, Label) ->
   util:logging(Filename, Formatted).
 
 printBT(Filename, {}) ->
+  file:delete(Filename),
   writeHead(Filename),
   writeFoot(Filename);
 
 printBT(Filename, BTree) ->
-  IsBT = isBT(BTree),
-  if
-    IsBT -> 
-      writeHead(Filename),
-      startPrint(Filename, BTree),
-      writeFoot(Filename);
-    true -> nil
-  end.
+  file:delete(Filename),
+  writeHead(Filename),
+  startPrint(Filename, BTree),
+  writeFoot(Filename).
 
 % ---------- Hilfs-Funktionen ----------
 
@@ -223,7 +226,25 @@ balanceFaktor({ _, _, {_, HL, _, _}, {_, HR, _, _}}) -> HR - HL.
 
 balanceIsValid(Node) -> (abs(balanceFaktor(Node)) =< 1).
 
+berechneHoehe({}, {}) -> 1;
+berechneHoehe({}, {_, H, _, _}) -> H + 1;
+berechneHoehe({_, H, _, _}, {}) -> H + 1;
+berechneHoehe({_, H1, _, _}, {_, H2, _, _}) ->
+  if
+    H1 > H2   -> H1 + 1;
+    H1 < H2   -> H2 + 1;
+    H1 == H2  -> H1 + 1
+  end.
+
 % ---------- Tests ----------
+
+berechneHoehe_test() ->
+  B = {},
+  ?assertEqual(berechneHoehe(B, B), 1),
+  B1 = {1, 1, {}, {}},
+  ?assertEqual(berechneHoehe(B, B1), 2),
+  B2 = {1, 2, {}, {4, 1, {}, {}}},
+  ?assertEqual(berechneHoehe(B2, B1), 3).
 
 balanceFaktor_test() ->
   B = initBT(),
@@ -247,3 +268,45 @@ middle_test() ->
   ?assertNot(middle(50, 100, 0)),
   ?assert(middle(50, 0, 100)),
   ?assertNot(middle(0, 0, 0)).
+
+linksRotation_test() ->
+  %% Beispiel Baum B:
+  %%
+  %%    4
+  %%      \
+  %%        7
+  %%          \
+  %%            16
+  %%
+  B = {4, 3, {}, {7, 2, {}, {16, 1, {}, {}}}},
+  BalanceFaktor = balanceFaktor(B),
+  ?assertEqual(BalanceFaktor, 2),
+  %% B rotiert (links):
+  %%
+  %%          7
+  %%        /   \
+  %%       4     16
+  %%
+  B_Rotiert = {7, 2, {4, 1, {}, {}}, {16, 1, {}, {}}},
+  ?assert(equalBT(B_Rotiert, checkAndRebalance(B))).
+
+rechtsRotation_test() ->
+  %% Beispiel Baum B:
+  %%
+  %%            15
+  %%           /                  
+  %%          8
+  %%        /
+  %%       2
+  %%
+  B = {15, 3, {8, 2, {2, 1, {}, {}}, {}}, {}},
+  BalanceFaktor = balanceFaktor(B),
+  ?assertEqual(BalanceFaktor, -2),
+  %% B rotiert (rechts):
+  %%
+  %%          8
+  %%        /   \
+  %%       2     15
+  %%
+  B_Rotiert = {8, 2, {2, 1, {}, {}}, {15, 1, {}, {}}},
+  ?assert(equalBT(B_Rotiert, checkAndRebalance(B))).
