@@ -36,7 +36,6 @@ isBT({Value, Height, Left, Right}) ->
 % ---------- Rotationen ----------
 
 linksRotation({ E, _, L, R }) ->
-  % io:fwrite("linksRotation ~n"),
   { RE, _, RL, RR } = R,
   NewLeftNode = { E, berechneHoehe(L, RL), L, RL },
   NewNode = { RE, berechneHoehe(NewLeftNode, RR), NewLeftNode, RR },
@@ -44,7 +43,6 @@ linksRotation({ E, _, L, R }) ->
   NewNode.
 
 rechtsRotation({ E, _, L, R }) ->
-  % io:fwrite("rechtsRotation ~n"),
   { LE, _, LL, LR } = L,
   NewRightNode = { E, berechneHoehe(LR, R), LR, R },
   NewNode = { LE,  berechneHoehe(LL, NewRightNode), LL, NewRightNode },
@@ -123,16 +121,14 @@ checkAndRebalance({ E, H, L, R }) ->
       B_Unter = balanceFaktor(L),
       if
         B_Unter == -1 -> rechtsRotation({ E, H, L, R });
-        B_Unter == 1 -> doppeltRechtsRotation({ E, H, L, R });
-        true -> { E, H, L, R } %% TODO Dieser Fall darf nicht auftreten
+        B_Unter == 1 -> doppeltRechtsRotation({ E, H, L, R })
       end;
     B_Ober == 2 ->
       %% Rebalancierung im rechten Teilbaum notwendig
       B_Unter = balanceFaktor(R),
       if
         B_Unter == -1 -> doppeltLinksRotation({ E, H, L, R });
-        B_Unter == 1 -> linksRotation({ E, H, L, R });
-        true -> { E, H, L, R } %% TODO Dieser Fall darf nicht auftreten
+        B_Unter == 1 -> linksRotation({ E, H, L, R })
       end;
     true -> { E, H, L, R }
   end.
@@ -288,6 +284,8 @@ linksRotation_test() ->
   %%       4     16
   %%
   B_Rotiert = {7, 2, {4, 1, {}, {}}, {16, 1, {}, {}}},
+  ?assert(isBT(B_Rotiert)),
+  ?assert(isBT(checkAndRebalance(B))),
   ?assert(equalBT(B_Rotiert, checkAndRebalance(B))).
 
 rechtsRotation_test() ->
