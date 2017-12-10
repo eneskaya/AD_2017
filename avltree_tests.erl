@@ -46,3 +46,8 @@ printBT_test() ->
   B9 = avltree:insertBT(B8, 3),
   B10 = avltree:insertBT(B9, 5),
   ?assertEqual(avltree:printBT("printBT.dot", B10), ok).
+
+delete_test() ->
+  List = util:randomliste(100),
+  AVL = avl_utils:insertRek(avltree:initBT(), List),
+  

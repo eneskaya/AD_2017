@@ -1,5 +1,5 @@
 -module (avltree).
--export ([initBT/0, isBT/1, insertBT/2, 
+-export ([initBT/0, isBT/1, insertBT/2, deleteBT/2,
           isEmptyBT/1, equalBT/2, printBT/2]).
 
 -include_lib("eunit/include/eunit.hrl").
@@ -24,15 +24,7 @@ isBT({Value, Height, Left, Right}) ->
   {L_V, L_H} = getValueAndHeight(Left),
   {R_V, R_H} = getValueAndHeight(Right),
   ValueCorrect = middle(Value, L_V, R_V),
-  if
-    %% Linker Knoten leerer Baum
-    L_H == 0 ->
-      HeightCorrect = Height == R_H + 1;
-    %% Rechter Knoten leerer Baum
-    R_H == 0 ->
-      HeightCorrect = Height == L_H + 1;
-    true -> HeightCorrect = (max(L_H, R_H) + 1) == Height
-  end,
+  HeightCorrect = (max(L_H, R_H) + 1) == Height,
   balanceIsValid({Value, Height, Left, Right}) and HeightCorrect and ValueCorrect and isBT(Left) and isBT(Right).
 
 % ---------- Rotationen ----------
@@ -91,10 +83,9 @@ insertBT({E, H, Left, Right}, N) ->
         {_, Height} = getValueAndHeight(NewRightTree),
         if
           H == Height ->
-            NewHeight = Height + 1,
             %% Falls sich die Höhe geändert hat, wird überprüft, ob eine Rebalancierung
             %% notwendig ist und ggf. durch Anwendung von Rotationen ausgeführt.
-            checkAndRebalance({E, NewHeight, Left, NewRightTree});
+            checkAndRebalance({E, Height, Left, NewRightTree});
           true -> {E, H, Left, NewRightTree}
         end;
       %% Füge Links hinzu:
@@ -103,9 +94,8 @@ insertBT({E, H, Left, Right}, N) ->
         {_, Height} = getValueAndHeight(NewLeftTree),
         if
           H == Height ->
-            NewHeight = Height + 1,
             %% s.o.
-            checkAndRebalance({E, NewHeight, NewLeftTree, Right});
+            checkAndRebalance({E, Height, NewLeftTree, Right});
           true -> {E, H, NewLeftTree, Right}
         end;
       %% Alle anderen Fälle werden ignoriert
@@ -114,6 +104,8 @@ insertBT({E, H, Left, Right}, N) ->
   end.
 
 %% Überprüft die Notwendigkeit einer Rebalancierung und führt diese ggf. aus.
+
+% ---------- checkAndRebalance ----------
 
 checkAndRebalance({ E, H, L, R }) ->
   B_Ober = balanceFaktor({ E, H, L, R }),
@@ -134,6 +126,13 @@ checkAndRebalance({ E, H, L, R }) ->
       end;
     true -> { E, H, L, R }
   end.
+
+% ---------- deleteBT ----------
+
+deleteBT({}) -> {}.
+deleteBT({ E, _, {}, {}}, E) -> {};
+
+deleteBT(B, E) -> B.
 
 % ---------- isEmptyBT ----------
 
@@ -181,19 +180,18 @@ writeLine(Filename, {N1, N2}, Label) ->
   Formatted = lists:flatten(io_lib:format(S, [StringN1, StringN2, StringLabel])),
   util:logging(Filename, Formatted).
 
-printBT(Filename, {}) ->
+printBT({}, Filename) ->
   file:delete(Filename),
   writeHead(Filename),
   writeFoot(Filename);
 
-printBT(Filename, BTree) ->
+printBT(BTree, Filename) ->
   file:delete(Filename),
   writeHead(Filename),
   startPrint(Filename, BTree),
   writeFoot(Filename).
 
 % ---------- Hilfs-Funktionen ----------
-
 
 incrementGlobalVar(Globalvar, Step) ->
   Known = util:getglobalvar(Globalvar),

@@ -33,3 +33,8 @@ start() ->
     startWithCount(1000000),
     startWithCount(10000000),
     startWithCount(100000000).
+
+klcTest(Count) ->
+    List = util:randomliste(Count),
+    B = avltree:initBT(),
+    
