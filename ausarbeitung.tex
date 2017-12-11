@@ -46,7 +46,7 @@
   
   \newpage
   \section{Aufgabenbeschreibung}
-	Zu implementieren sei der abstrakte Datentyp AVL-Baum in der funktionalen Sprache Erlang. AVL Bäume sind höhen-balancierte Binär-Bäume. Durch diese Daten-Struktur, die zum Beispiel in Datenbanksystemen im Hintergrund für einen effizienten Zugriff auf Schlüssel gewährleistet, verhindert man u.a. dass Bäume bspw. zu Listen werden und so die erwartet Effizienz von Einfüge-, Lösch- und Such-Operationen verschlechtern.
+	Zu implementieren sei der abstrakte Datentyp AVL-Baum in der funktionalen Sprache Erlang. AVL Bäume sind höhen-balancierte Binär-Bäume. Durch diese Daten-Struktur, die zum Beispiel in Datenbanksystemen im Hintergrund für einen effizienten Zugriff auf Schlüssel gewährleistet, verhindert man u.a. dass Bäume bspw. zu Listen werden und so die erwartet Effizienz von Einfüge-, Lösch- und Such-Operationen verschlechtern. Das Suchen in einem AVL-Baum hat den Aufwand $O(log(n))$, dies wird später in den Tests und den Experimenten gezeigt.
 	Diese Daten-Struktur wurde bereits 1962 von \textbf{A}delson-\textbf{V}elskii und \textbf{L}andis vorgeschlagen (Daher auch der Name AVL).
 	
 	\subsection{Geforderte Operationen}
@@ -68,18 +68,34 @@
 	Die Datenstruktur AVL-Baum baut auf die simplere ADT Baum auf. In der vorliegenden Ausarbeitung gehe ich daher besonders auf die Besonderheiten des AVL-Baums ein und lasse die Details zu Binär-Bäumen, soweit möglich, weg. Dieses Wissen über Binär-Bäume sei dem Leser dieser Ausarbeitung vorausgesetzt.
 
     % @TODO: Beschreiben was ein AVL Baum ist, die geforderten Operationen, die Ausgabe mittels .dot Dateien
-    
+  
+  \subsection{TDD in Erlang}
+  
+  Um mögliches Refactoring, bzw. schnelles Testen der Implementierung zu gewährleisten wurde vor den Implementierungen ein EUnit-Test geschrieben (siehe Datei \textit{avltree\_tests.erl}). Für einen Blackbox-Test, sprich der Test der exportierten Schnittstellen, kann nun diese Datei kompiliert werden und mit EUnit ausgeführt werden.
+  
+\begin{lstlisting}[language=erlang]
+c(avltree_tests).
+c(avltree).
+eunit:test(avltree).
+\end{lstlisting}
+
+	Für die Hilfsfunktionen wurden innerhalb des zu implementierenden Moduls (\textit{avltree.erl}) jeweils Test-Methoden hinzugefügt, welche dann auch beim EUnit Test-Aufruf durchlaufen.
+  
   \newpage
   \section{Entwurf und Implementierung der Lösung}
-  
-  	Der abstrakte Datentyp AVL-Baum wird in Erlang mithilfe von Tupeln umgesetzt. Tupeln haben in Erlang eine feste Struktur und erlauben, im Vergleich zu Listen, weniger Operationen. Dadurch war schon von vornherein ein klarer Pfad notwendig, dem man bei der Implementierung befolgt. Zunächst wird festgelegt, dass das leere Tupel den leeren Baum repräsentiert und somit für die Initialisierung (initBT) des AVL-Baums als Rückgabewert verwendet wird. 
-    \newline
+  	Der abstrakte Datentyp AVL-Baum wird in Erlang mithilfe von Tupeln umgesetzt. Tupeln haben in Erlang eine feste Struktur und erlauben, im Vergleich zu Listen, weniger Operationen. Dadurch war schon von vornherein ein klarer Pfad notwendig, dem man bei der Implementierung befolgt. Zunächst wird festgelegt, dass das leere Tupel $\{\}$ den leeren Baum repräsentiert und somit für die Initialisierung (initBT) des AVL-Baums als Rückgabewert verwendet wird. 
     \newline
     Für den AVL-Baum wird nun folgende rekursive Struktur für einen Knoten bzw. den gesamten Baum festgelegt:
     
-    \begin{lstlisting}[language=erlang]
+\begin{lstlisting}[language=erlang]
 B = {Element, Hoehe, LinkerTeilbaum, RechterTeilbaum}.
-    \end{lstlisting}
+\end{lstlisting}
+    
+    Ein Blatt sieht demnach so aus:
+    
+\begin{lstlisting}[language=erlang]
+Blatt = {Element, Hoehe, {}, {}}
+\end{lstlisting}
     
 	An erster Stelle ist das eigentliche Element des Knotens, welches gemäß der Aufgabenstellung nur ganze Zahlen erlaubt. Die zweite Stelle ist eine positive, ganze Zahl, beginnend ab 1 für einen nicht-leeren Baum, die die Höhe des Knotens im gesamten Baum speichert. Die eigentliche Rekursion beginnt nun an 3. und 4. Stelle in dieser Datenstruktur, welche jeweils wieder einen Knoten/Teil-Baum speichern. Ein Blatt ist ein Knoten, mit der Höhe 1 und leeren Tupeln für den linken und rechten Teilbaum, wie im folgenden Beispiel veranschaulicht wird:
 
@@ -101,13 +117,13 @@ B = { 5, 3,
    	\includegraphics[height=3cm]{1.png}
 	\end{center}
 
-	Mit dieser Struktur und dem Pattern-Matching in Erlang ist es nun trivial, den Baum rekursiv zu durchlaufen. Die Struktur für den Baum steht nun fest, die Operationen, wie Einfügen und Löschen aus dem Baum werden im Nachfolgenden erläutert. Dabei liegt der Augenmerk immer in der Erhaltung der AVL Eigenschaft.
+	Mit dieser Struktur und dem Pattern-Matching in Erlang ist es nun trivial, den Baum rekursiv zu durchlaufen. Die Struktur für den Baum steht nun fest, die Operationen, wie Einfügen und Löschen aus dem Baum werden im Nachfolgenden erläutert. Dabei liegt der Augenmerk immer in der Erhaltung der AVL-Bedingung.
 
 	\subsection{AVL-Bedingung}
 	\label{sec:avl-crit}
 
-	Damit ein Baum ein AVL-Baum ist muss die AVL-Bedingung gelten. Dazu betrachtet man den \textbf{Balance-Faktor}, welcher definiert wird mit \\ $BF(t) = h(t_r) - h(t_l)$, wobei $t_l$ und $t_r$ jeweils den rechten und den linken Teilbaum von $t$ und $h(t)$ die Höhe eines Teilbaums ist.
-	Ein Binär-Baum ist nun genau dann ein AVL-Baum wenn $BF(t) \in \{-1,0,1\}$. Ein Baum mit dem Balance-Faktor 0 nennt man ausgewogen. Mit $BF(t) < 0$ ist ein Baum links- und mit $BF(t) > 0$ rechtslastig.
+	Damit ein Baum ein AVL-Baum ist muss die AVL-Bedingung gelten. Dazu betrachtet man den \textbf{Balance-Faktor}, welcher definiert wird mit \\ $BF(t) = h(t_r) - h(t_l)$, wobei $t_l$ und $t_r$ jeweils den rechten und den linken Teilbaum von $t$ darstellen und $h(t)$ die Höhe eines Teilbaums ist.
+	Ein Binär-Baum ist nun genau dann ein AVL-Baum wenn für alle Knoten in $t$ gilt: $BF(t) \in \{-1,0,1\}$. Ein Baum mit dem Balance-Faktor 0 nennt man ausgewogen. Mit $BF(t) < 0$ ist ein Baum links- und mit $BF(t) > 0$ rechtslastig.
 	
 	Für die Berechnung des Balance-Faktors in Erlang wird eine simple Funktion geschrieben:
 	
@@ -125,7 +141,7 @@ balanceFaktor({ _, _, {_, HL, _, _}, {_, HR, _, _}}) ->
 	
 	\subsection{Rotationen}
 	
-	Beim Einfügen und beim Löschen in einen AVL-Baum muss vor und nach der Operation die AVL-Bedingung stets stimmen. Um dies zu gewährleisten gibt es vier Wege eine Rotation an einem Knoten durchzuführen. Die \textit{Links-Rotation}, \textit{Rechts-Rotation}, \textit{Doppelt-Links-} und \textit{Doppelt-Rechts-Rotation}. Die Doppelt-Links-Rotation kann man auch als \textit{Rechts-Links-} und die Doppelt-Rechts-Rotation als \textit{Links-Rechts-Rotation} bezeichnen. 
+	Beim Einfügen und beim Löschen in einen AVL-Baum muss vor und nach der Operation die AVL-Bedingung stets gelten. Um dies zu gewährleisten gibt es vier Wege eine Rotation an einem Knoten durchzuführen. Die \textit{Links-Rotation}, \textit{Rechts-Rotation}, \textit{Doppelt-Links-} und \textit{Doppelt-Rechts-Rotation}. Die Doppelt-Links-Rotation kann man auch als \textit{Rechts-Links-} und die Doppelt-Rechts-Rotation als \textit{Links-Rechts-Rotation} bezeichnen. 
 	Welche Rotation angewendet werden muss kommt nun auf den Balance-Faktor eines Baums ein. Dazu wird eine Funktion geschrieben, die dies für einen Knoten feststellt (verkürzt):
 	
 	\begin{lstlisting}[language=erlang,numbers=left]
@@ -165,7 +181,7 @@ rechtsRotation({ E, _, L, R }) ->
   NewNode.
 	\end{lstlisting}
   
-  	Der neue Rechte Knoten wird nun Das Element E, mit der Höhe die sich aus dem rechten Teilbaum des linken Teilbaums und dem rechten Teilbaum des Ausgangs Baums zusammensetzt. Hierzu wird auch die Hilfsfunktion \textit{berechneHoehe(L, R)} verwendet, die einfach nur $max(h(L), h(R)) + 1$ zurückgibt, wobei $h(B)$ die Höhe eines Baums B ist.
+  	Der neue Rechte Knoten wird nun das Element E, mit der Höhe die sich aus dem rechten Teilbaum des linken Teilbaums und dem rechten Teilbaum des Ausgangs-Baums zusammensetzt. Hierzu wird auch die Hilfsfunktion \textit{berechneHoehe(L, R)} verwendet, die einfach nur $max(h(L), h(R)) + 1$ zurückgibt, wobei $h(B)$ die Höhe eines Baums B ist.
   	Der neue Knoten setzt sich nun zusammen aus dem Element des linken Teilbaums, dem linken Teilbaum des linken Teilbaums, und dem zuvor erwähnten neuen rechten Knoten.
   	
   	So führt nun die Eingabe für den oberen Baum mit dem Tupel 
@@ -174,15 +190,21 @@ B = {15, 3, {8, 2, {2, 1, {}, {}}, {}}, {}}
   	\end{lstlisting}
 	Zu der Ausgabe B1 mit 
 	\begin{lstlisting}
-B1 = {8, 2, {2, 1, {}, {}}, {15, 1, {} , {}}}
+B1 = {8, 2, {2, 1, {}, {}}, {15, 1, {}, {}}}
 	\end{lstlisting}
   	
-  	Der Baum ist nach dieser Operation.\\
-  	Auf die Links-Rotation wird nicht speziell eingegangen, da diese analog zur Rechts-Rotation auf dem rechten Teilbaum operiert.
+  	Der Baum ist nach dieser Operation wieder balanciert.
+  	Auf die Links-Rotation wird jetzt nicht speziell eingegangen, da diese analog zur Rechts-Rotation auf dem rechten Teilbaum operiert.
   	
 	\subsubsection{Doppel-Rotationen}
 	
 	Eine Doppel-Rechts- bzw. Links-Rotation ist eine Zusammensetzung aus einfachen Links- und Rechts-Rotationen, die man geschickt anwendet. So wird bei einem gegenen Baum $B$ und ihren Teilbäumen $B_L$ und $B_R$ die Doppelt-Rechts-Rotation wie folgt ausgeführt: Zunächst eine Links-Rotation auf $B_L$ und dann eine Rechts-Rotation auf den gesamten Baum $B$. Analog dazu wird bei einer Doppelt-Links-Rotation zunächst eine Rechts-Rotation auf $B_R$ und dann eine Links-Rotation auf auf den gesamten Baum $B$ angewandt.
+	Im Code sieht das für die Doppelt-Rechts-Rotation dann folgendermaßen aus:
+	
+\begin{lstlisting}[language=erlang]
+doppeltRechtsRotation({E, H, L, R}) ->
+  rechtsRotation({ E, H, linksRotation(L), R }).
+\end{lstlisting}
 	
 	\subsection{Prüfen, ob ein AVL-Baum vorliegt}
 	
@@ -231,6 +253,16 @@ insertBT(B, N) -> B.
 	Die Rekursion wird aufgelöst, sobald das Element an einen Teil-Baum als Blatt hinzugefügt worden ist. Hierzu wird die Funktion $insertBT(\{\}, N)$ definiert, welche nur einen neuen Baum mit N als Element, der Höhe 1 und jeweils leerem linken und rechten Teilbäumen zurückgibt.
 	
 	\subsection{Löschen aus einem AVL-Baum}
+
+	Der Algorithmus zum Löschen aus einem AVL-Baum $B$ funktioniert folgendermaßen:
+	
+	\textbf{Objektmengen}: D = Zu löschendes Element, B = Baum
+	
+	\begin{enumerate}
+		\item Gehe rekursiv zum zu löschenden Knoten durch Traversion von $B$
+		\item Knoten wurde gefunden: Ersetze den gefundenen Knoten mit dem größten Element aus dem linken Teilbaum bzw., falls linker Teilbaum leer, mit dem kleinsten Element aus dem rechten Teilbaum und lösche diesen Knoten
+		\item 
+	\end{enumerate}
 
   	\newpage
   	\section{Testumgebung}

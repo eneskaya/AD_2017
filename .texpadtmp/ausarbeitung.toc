@@ -2,13 +2,14 @@
 \contentsline {section}{\numberline {2}Aufgabenbeschreibung}{5}
 \contentsline {subsection}{\numberline {2.1}Geforderte Operationen}{5}
 \contentsline {subsection}{\numberline {2.2}Herangehensweise}{5}
-\contentsline {section}{\numberline {3}Entwurf und Implementierung der L\IeC {\"o}sung}{6}
-\contentsline {subsection}{\numberline {3.1}AVL-Bedingung}{7}
-\contentsline {subsection}{\numberline {3.2}Rotationen}{7}
-\contentsline {subsubsection}{\numberline {3.2.1}Links- und Rechts-Rotation}{8}
-\contentsline {subsubsection}{\numberline {3.2.2}Doppel-Rotationen}{9}
-\contentsline {subsection}{\numberline {3.3}Pr\IeC {\"u}fen, ob ein AVL-Baum vorliegt}{9}
-\contentsline {subsection}{\numberline {3.4}Einf\IeC {\"u}gen in einen AVL-Baum}{10}
-\contentsline {subsection}{\numberline {3.5}L\IeC {\"o}schen aus einem AVL-Baum}{10}
-\contentsline {section}{\numberline {4}Testumgebung}{11}
-\contentsline {section}{\numberline {5}Quellen}{12}
+\contentsline {subsection}{\numberline {2.3}TDD in Erlang}{6}
+\contentsline {section}{\numberline {3}Entwurf und Implementierung der L\IeC {\"o}sung}{7}
+\contentsline {subsection}{\numberline {3.1}AVL-Bedingung}{8}
+\contentsline {subsection}{\numberline {3.2}Rotationen}{8}
+\contentsline {subsubsection}{\numberline {3.2.1}Links- und Rechts-Rotation}{9}
+\contentsline {subsubsection}{\numberline {3.2.2}Doppel-Rotationen}{10}
+\contentsline {subsection}{\numberline {3.3}Pr\IeC {\"u}fen, ob ein AVL-Baum vorliegt}{10}
+\contentsline {subsection}{\numberline {3.4}Einf\IeC {\"u}gen in einen AVL-Baum}{11}
+\contentsline {subsection}{\numberline {3.5}L\IeC {\"o}schen aus einem AVL-Baum}{11}
+\contentsline {section}{\numberline {4}Testumgebung}{12}
+\contentsline {section}{\numberline {5}Quellen}{13}

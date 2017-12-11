@@ -83,9 +83,10 @@ insertBT({E, H, Left, Right}, N) ->
         {_, Height} = getValueAndHeight(NewRightTree),
         if
           H == Height ->
+            NewHeight = Height + 1,
             %% Falls sich die Höhe geändert hat, wird überprüft, ob eine Rebalancierung
             %% notwendig ist und ggf. durch Anwendung von Rotationen ausgeführt.
-            checkAndRebalance({E, Height, Left, NewRightTree});
+            checkAndRebalance({E, NewHeight, Left, NewRightTree});
           true -> {E, H, Left, NewRightTree}
         end;
       %% Füge Links hinzu:
@@ -94,8 +95,9 @@ insertBT({E, H, Left, Right}, N) ->
         {_, Height} = getValueAndHeight(NewLeftTree),
         if
           H == Height ->
+            NewHeight = Height + 1,
             %% s.o.
-            checkAndRebalance({E, Height, NewLeftTree, Right});
+            checkAndRebalance({E, NewHeight, NewLeftTree, Right});
           true -> {E, H, NewLeftTree, Right}
         end;
       %% Alle anderen Fälle werden ignoriert
@@ -103,10 +105,61 @@ insertBT({E, H, Left, Right}, N) ->
     end
   end.
 
-%% Überprüft die Notwendigkeit einer Rebalancierung und führt diese ggf. aus.
+% ---------- deleteBT ----------
+
+deleteBT({}, _) -> {};
+
+deleteBT({E, H, L, R }, D) ->
+  LeftEmpty = isEmptyBT(L),
+  RightEmpty = isEmptyBT(R),
+  if
+    D > E -> 
+      NewRight = deleteBT(R, D),
+      NewHeight = berechneHoehe(L, NewRight),
+      checkAndRebalance({ E, NewHeight, L, NewRight });
+    D < E ->
+      NewLeft = deleteBT(L, D),
+      NewHeight = berechneHoehe(NewLeft, R),
+      checkAndRebalance({ E, NewHeight, NewLeft, R });
+    H == 1 -> {};
+    D == E -> nil;
+      % if
+      %   not LeftEmpty ->
+      %     BiggestLeftChild = findBiggest(L),
+
+      % ;
+    true -> {E, H, L, R }
+  end.
+
+findBiggest({ E, _, _, {} }) -> E;
+findBiggest({ _, _, _, R }) -> findBiggest(R).
+
+findSmallest({ E, _, {}, _ }) -> E;
+findSmallest({ _, _, L, _ }) -> findSmallest(L).
+
+findBiggest_test() ->
+  B = insertBT({}, 14),
+  ?assertEqual(findBiggest(B), 14),
+  B1 = insertBT(B, 2),
+  B2 = insertBT(B1, 31),
+  B3 = insertBT(B2, 19),
+  B4 = insertBT(B3, 18),
+  B5 = insertBT(B4, 23),
+  ?assertEqual(findBiggest(B5), 31).
+
+findSmallest_test() ->
+  B = insertBT({}, 14),
+  ?assertEqual(findSmallest(B), 14),
+  B1 = insertBT(B, 2),
+  B2 = insertBT(B1, 31),
+  B3 = insertBT(B2, 19),
+  B4 = insertBT(B3, 18),
+  B5 = insertBT(B4, 23),
+  ?assertEqual(findSmallest(B5), 2).
 
 % ---------- checkAndRebalance ----------
 
+%% Überprüft die Notwendigkeit einer Rebalancierung und führt diese ggf. aus.
 checkAndRebalance({ E, H, L, R }) ->
   B_Ober = balanceFaktor({ E, H, L, R }),
   if
@@ -122,17 +175,11 @@ checkAndRebalance({ E, H, L, R }) ->
       B_Unter = balanceFaktor(R),
       if
         B_Unter == -1 -> doppeltLinksRotation({ E, H, L, R });
-        B_Unter == 1 -> linksRotation({ E, H, L, R })
+        B_Unter == 1 -> linksRotation({ E, H, L, R });
+        B_Unter == 0 -> linksRotation({ E, H, L, R })
       end;
     true -> { E, H, L, R }
   end.
-
-% ---------- deleteBT ----------
-
-deleteBT({}) -> {}.
-deleteBT({ E, _, {}, {}}, E) -> {};
-
-deleteBT(B, E) -> B.
 
 % ---------- isEmptyBT ----------
 

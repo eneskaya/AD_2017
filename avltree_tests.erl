@@ -45,9 +45,32 @@ printBT_test() ->
   B8 = avltree:insertBT(B7, 0),
   B9 = avltree:insertBT(B8, 3),
   B10 = avltree:insertBT(B9, 5),
-  ?assertEqual(avltree:printBT("printBT.dot", B10), ok).
+  ?assertEqual(avltree:printBT(B10, "printBT.dot"), ok).
 
 delete_test() ->
-  List = util:randomliste(100),
-  AVL = avl_utils:insertRek(avltree:initBT(), List),
-  
+  B = avltree:initBT(),
+  B1 = avltree:insertBT(B, 14),
+  B2 = avltree:insertBT(B1, 21),
+  B3 = avltree:insertBT(B2, 12),
+  B4 = avltree:insertBT(B3, 139),
+  B5 = avltree:insertBT(B4, 2019),
+  Exp1 = {14, 3, 
+          {12, 1, {}, {}},
+          {139, 2, 
+            {21, 1, {}, {}}, 
+            {2019, 1, {}, {}}}
+         },
+  ?assert(avltree:isBT(B4)),
+  ?assert(avltree:isBT(Exp1)),
+  ?assert(avltree:equalBT(B4, Exp1)),
+  B6 = avltree:deleteBT(B5, 139),
+  Exp2 = {14, 3,
+            {12, 1, {}, {}},
+            {21, 2, 
+              {}, 
+              {2019, 1, {}, {}}}
+         },
+  ?assert(avltree:isBT(B6)),
+  ?assert(avltree:isBT(Exp2)),
+  ?assert(avltree:equalBT(B6, Exp1)).
+ 
