@@ -11,5 +11,7 @@
 \contentsline {subsection}{\numberline {3.3}Pr\IeC {\"u}fen, ob ein AVL-Baum vorliegt}{10}
 \contentsline {subsection}{\numberline {3.4}Einf\IeC {\"u}gen in einen AVL-Baum}{11}
 \contentsline {subsection}{\numberline {3.5}L\IeC {\"o}schen aus einem AVL-Baum}{12}
-\contentsline {section}{\numberline {4}Testumgebung}{13}
-\contentsline {section}{\numberline {5}Quellen}{14}
+\contentsline {subsubsection}{\numberline {3.5.1}Sonderfall f\IeC {\"u}r $checkAndRebalance$}{13}
+\contentsline {subsection}{\numberline {3.6}Ausgabe als .dot-Datei, $printBT$}{14}
+\contentsline {subsection}{\numberline {3.7}Laufzeitmessungen}{15}
+\contentsline {section}{\numberline {4}Quellen}{16}

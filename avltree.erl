@@ -125,7 +125,6 @@ deleteBT({E, H, L, R}, D) ->
       if
         %% Gefundener Knoten ist ein Blatt, wird einfach gelöscht.
         H == 1 -> {};
-        %% Falls kein Blatt
         not LeftEmpty ->
           BiggestLeftChild = findBiggest(L),
           NewLeft = deleteBT(L, BiggestLeftChild),

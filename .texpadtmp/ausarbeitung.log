@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.12.10)  11 DEC 2017 18:07
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.12.10)  11 DEC 2017 20:04
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -400,18 +400,18 @@ Package color Info: Driver file: pdftex.def on input line 147.
 ) (/Users/eneskaya/code/AD_Trials/.texpadtmp/ausarbeitung.aux)
 \openout1 = `ausarbeitung.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
 \c@lstlisting=\count96
  (/usr/local/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -463,15 +463,15 @@ Package grfext Info: Graphics extension search list:
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 22.
+(Font)              <12> on input line 23.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 22.
+(Font)              <8> on input line 23.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 22.
+(Font)              <6> on input line 23.
  [1
 
 {/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 25--34
+Underfull \hbox (badness 10000) in paragraph at lines 26--35
 
  []
 
@@ -485,32 +485,32 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 \openout3 = `ausarbeitung.toc'.
 
  [3]
-Underfull \hbox (badness 10000) in paragraph at lines 41--46
+Underfull \hbox (badness 10000) in paragraph at lines 42--47
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 41--46
+Underfull \hbox (badness 10000) in paragraph at lines 42--47
 
  []
 
 [4]
-Overfull \hbox (20.44513pt too wide) in paragraph at lines 61--62
+Overfull \hbox (20.44513pt too wide) in paragraph at lines 62--63
 \OT1/cmr/m/n/10 neu-en Baum in-klu-si-ve dem Ele-ment N. F[]uhrt even-tu-el-le Rotations-Operationen
  []
 
 
-Overfull \hbox (21.83401pt too wide) in paragraph at lines 62--63
+Overfull \hbox (21.83401pt too wide) in paragraph at lines 63--64
 \OT1/cmr/m/n/10 neu-en Baum ex-klu-si-ve dem Ele-ment N. F[]uhrt even-tu-el-le Rotations-Operationen
  []
 
 
-Overfull \hbox (0.6952pt too wide) in paragraph at lines 63--64
+Overfull \hbox (0.6952pt too wide) in paragraph at lines 64--65
 []$\OML/cmm/m/it/10 printBT\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 B; Filename\OT1/cmr/m/n/10 )$: Er-stellt ei-ne Da-tei mit An-wei-sun-gen zum Drucken
  []
 
 
-Overfull \hbox (4.63937pt too wide) in paragraph at lines 74--75
+Overfull \hbox (4.63937pt too wide) in paragraph at lines 75--76
 \OT1/cmr/m/n/10 Um m[]ogli-ches Re-fac-to-ring, bzw. schnel-les Te-sten der Im-ple-men-tie-rung zu gew[]ahr-
  []
 
@@ -521,93 +521,113 @@ File: lstlang2.sty 2015/06/04 1.6 listings language file
 ) (/usr/local/texlive/2017/texmf-dist/tex/latex/listings/lstlang3.sty
 File: lstlang3.sty 2015/06/04 1.6 listings language file
 ) [6]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 91.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 92.
  (/usr/local/texlive/2017/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/bx/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/b/n' tried instead on input line 91.
+(Font)              Font shape `OMS/cmsy/b/n' tried instead on input line 92.
  <1.png, id=29, 560.0925pt x 903.375pt>
 File: 1.png Graphic file (type png)
  <use 1.png>
-Package pdftex.def Info: 1.png used on input line 117.
+Package pdftex.def Info: 1.png used on input line 118.
 (pdftex.def)             Requested size: 52.91876pt x 85.35826pt.
  [7 <./1.png>]
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 131.
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 132.
  (/usr/local/texlive/2017/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/bx/n' in size <10> not available
-(Font)              Font shape `OML/cmm/b/it' tried instead on input line 131.
+(Font)              Font shape `OML/cmm/b/it' tried instead on input line 132.
 
-Overfull \hbox (6.93176pt too wide) in paragraph at lines 144--146
-\OT1/cmr/m/it/10 Rechts-Rotation\OT1/cmr/m/n/10 , \OT1/cmr/m/it/10 Doppelt-Links- \OT1/cmr/m/n/10 und \OT1/cmr/m/it/10 Doppelt-Rechts-Rotation\OT1/cmr/m/n/10 . Die Doppelt-Links-
- []
-
-
-Overfull \hbox (3.4098pt too wide) in paragraph at lines 163--165
+Overfull \hbox (3.4098pt too wide) in paragraph at lines 164--166
 []\OT1/cmr/bx/n/10 Erl[]aute-rung\OT1/cmr/m/n/10 : In Zei-le 2 wird zun[]achst der Balance-Faktor des Vater-Knotens
  []
 
 [8] <2.png, id=43, 258.9675pt x 903.375pt>
 File: 2.png Graphic file (type png)
  <use 2.png>
-Package pdftex.def Info: 2.png used on input line 171.
+Package pdftex.def Info: 2.png used on input line 172.
 (pdftex.def)             Requested size: 24.4678pt x 85.35826pt.
 
-Overfull \hbox (81.00433pt too wide) in paragraph at lines 180--181
+Overfull \hbox (81.00433pt too wide) in paragraph at lines 181--182
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 189.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 190.
 
-Overfull \hbox (3.3617pt too wide) in paragraph at lines 196--198
+Overfull \hbox (3.3617pt too wide) in paragraph at lines 197--199
 []\OT1/cmr/m/n/10 Der Baum ist nach die-ser Ope-ra-ti-on wie-der ba-lan-ciert. Auf die Links-Rotation
  []
 
 [9 <./2.png>]
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 220.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 221.
  [10]
-Overfull \hbox (10.5284pt too wide) in paragraph at lines 249--250
+Overfull \hbox (10.5284pt too wide) in paragraph at lines 250--251
 []\OT1/cmr/m/n/10 Pr[]ufe, ob sich die H[]ohe ver[]andert hat nach der vor-he-ri-gen Einf[]uge-Operation.
  []
 
 [11]
-Underfull \hbox (badness 10000) in paragraph at lines 258--261
+Underfull \hbox (badness 10000) in paragraph at lines 259--262
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 268--269
+Underfull \hbox (badness 10000) in paragraph at lines 269--270
 
  []
 
 
-Overfull \hbox (81.00433pt too wide) in paragraph at lines 288--289
+Overfull \hbox (81.00433pt too wide) in paragraph at lines 289--290
 [][][][][][][][][][][][][][][][][][][] 
  []
 
 
-Overfull \hbox (105.00458pt too wide) in paragraph at lines 293--294
+Overfull \hbox (105.00458pt too wide) in paragraph at lines 294--295
 [][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[12] [13] [14] (/Users/eneskaya/code/AD_Trials/.texpadtmp/ausarbeitung.aux) ) 
+[12] <3.png, id=57, 861.2175pt x 1262.7175pt>
+File: 3.png Graphic file (type png)
+ <use 3.png>
+Package pdftex.def Info: 3.png used on input line 307.
+(pdftex.def)             Requested size: 77.61136pt x 113.81102pt.
+ <4.png, id=58, 690.58pt x 1262.7175pt>
+File: 4.png Graphic file (type png)
+ <use 4.png>
+Package pdftex.def Info: 4.png used on input line 313.
+(pdftex.def)             Requested size: 62.23381pt x 113.81102pt.
+ [13 <./3.png> <./4.png>]
+Overfull \hbox (3.00354pt too wide) in paragraph at lines 331--332
+[][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (15.00366pt too wide) in paragraph at lines 332--333
+[][][][][][][][][][][][][][][][][][][] 
+ []
+
+[14]
+Overfull \hbox (8.0006pt too wide) in paragraph at lines 353--354
+\OT1/cmr/m/n/10 In der Theo-rie wird f[]ur den AVL-Baum f[]ur Einf[]uge-, L[]osch- und Such-Operationen
+ []
+
+[15] [16] (/Users/eneskaya/code/AD_Trials/.texpadtmp/ausarbeitung.aux) ) 
 Here is how much of TeX's memory you used:
- 4009 strings out of 492995
- 53696 string characters out of 6132703
- 147848 words of memory out of 5000000
- 7507 multiletter control sequences out of 15000+600000
+ 4038 strings out of 492995
+ 54029 string characters out of 6132703
+ 150024 words of memory out of 5000000
+ 7534 multiletter control sequences out of 15000+600000
  8854 words of font info for 31 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 39i,6n,42p,727b,1291s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on /Users/eneskaya/code/AD_Trials/.texpadtmp/ausarbeitung.pdf (14 pages, 216196 bytes).
+ 39i,8n,42p,1056b,1291s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on /Users/eneskaya/code/AD_Trials/.texpadtmp/ausarbeitung.pdf (16 pages, 356582 bytes).
 PDF statistics:
- 103 PDF objects out of 1000 (max. 8388607)
- 70 compressed objects within 1 object stream
+ 125 PDF objects out of 1000 (max. 8388607)
+ 83 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
