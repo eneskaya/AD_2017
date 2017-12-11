@@ -109,7 +109,7 @@ insertBT({E, H, Left, Right}, N) ->
 
 deleteBT({}, _) -> {};
 
-deleteBT({E, H, L, R }, D) ->
+deleteBT({E, H, L, R}, D) ->
   LeftEmpty = isEmptyBT(L),
   RightEmpty = isEmptyBT(R),
   if
@@ -121,13 +121,22 @@ deleteBT({E, H, L, R }, D) ->
       NewLeft = deleteBT(L, D),
       NewHeight = berechneHoehe(NewLeft, R),
       checkAndRebalance({ E, NewHeight, NewLeft, R });
-    H == 1 -> {};
-    D == E -> nil;
-      % if
-      %   not LeftEmpty ->
-      %     BiggestLeftChild = findBiggest(L),
-
-      % ;
+    D == E ->
+      if
+        %% Gefundener Knoten ist ein Blatt, wird einfach gelöscht.
+        H == 1 -> {};
+        %% Falls kein Blatt
+        not LeftEmpty ->
+          BiggestLeftChild = findBiggest(L),
+          NewLeft = deleteBT(L, BiggestLeftChild),
+          NewHeight = berechneHoehe(NewLeft, R),
+          checkAndRebalance({BiggestLeftChild, NewHeight, NewLeft, R});
+        not RightEmpty ->
+          SmallestRightChild = findSmallest(R),
+          NewRight = deleteBT(R, SmallestRightChild),
+          NewHeight = berechneHoehe(L, NewRight),
+          checkAndRebalance({ SmallestRightChild, NewHeight, L, NewRight })
+      end;
     true -> {E, H, L, R }
   end.
 
@@ -168,7 +177,8 @@ checkAndRebalance({ E, H, L, R }) ->
       B_Unter = balanceFaktor(L),
       if
         B_Unter == -1 -> rechtsRotation({ E, H, L, R });
-        B_Unter == 1 -> doppeltRechtsRotation({ E, H, L, R })
+        B_Unter == 1 -> doppeltRechtsRotation({ E, H, L, R });
+        B_Unter == 0 -> rechtsRotation({ E, H, L, R })
       end;
     B_Ober == 2 ->
       %% Rebalancierung im rechten Teilbaum notwendig

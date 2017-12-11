@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.12.10)  11 DEC 2017 16:24
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.12.10)  11 DEC 2017 18:07
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -574,20 +574,40 @@ Overfull \hbox (10.5284pt too wide) in paragraph at lines 249--250
 []\OT1/cmr/m/n/10 Pr[]ufe, ob sich die H[]ohe ver[]andert hat nach der vor-he-ri-gen Einf[]uge-Operation.
  []
 
-[11] [12] [13] (/Users/eneskaya/code/AD_Trials/.texpadtmp/ausarbeitung.aux) ) 
+[11]
+Underfull \hbox (badness 10000) in paragraph at lines 258--261
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 268--269
+
+ []
+
+
+Overfull \hbox (81.00433pt too wide) in paragraph at lines 288--289
+[][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (105.00458pt too wide) in paragraph at lines 293--294
+[][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+[12] [13] [14] (/Users/eneskaya/code/AD_Trials/.texpadtmp/ausarbeitung.aux) ) 
 Here is how much of TeX's memory you used:
- 3997 strings out of 492995
- 53524 string characters out of 6132703
+ 4009 strings out of 492995
+ 53696 string characters out of 6132703
  147848 words of memory out of 5000000
- 7495 multiletter control sequences out of 15000+600000
+ 7507 multiletter control sequences out of 15000+600000
  8854 words of font info for 31 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  39i,6n,42p,727b,1291s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on /Users/eneskaya/code/AD_Trials/.texpadtmp/ausarbeitung.pdf (13 pages, 214511 bytes).
+Output written on /Users/eneskaya/code/AD_Trials/.texpadtmp/ausarbeitung.pdf (14 pages, 216196 bytes).
 PDF statistics:
- 100 PDF objects out of 1000 (max. 8388607)
- 68 compressed objects within 1 object stream
+ 103 PDF objects out of 1000 (max. 8388607)
+ 70 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

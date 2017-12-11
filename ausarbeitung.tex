@@ -252,17 +252,49 @@ insertBT(B, N) -> B.
 	
 	Die Rekursion wird aufgelöst, sobald das Element an einen Teil-Baum als Blatt hinzugefügt worden ist. Hierzu wird die Funktion $insertBT(\{\}, N)$ definiert, welche nur einen neuen Baum mit N als Element, der Höhe 1 und jeweils leerem linken und rechten Teilbäumen zurückgibt.
 	
+	\newpage
 	\subsection{Löschen aus einem AVL-Baum}
 
-	Der Algorithmus zum Löschen aus einem AVL-Baum $B$ funktioniert folgendermaßen:
-	
+	Das Löschen eines Knoten aus einem AVL-Baum funktioniert folgendermaßen:
+	\\\\
 	\textbf{Objektmengen}: D = Zu löschendes Element, B = Baum
 	
 	\begin{enumerate}
 		\item Gehe rekursiv zum zu löschenden Knoten durch Traversion von $B$
-		\item Knoten wurde gefunden: Ersetze den gefundenen Knoten mit dem größten Element aus dem linken Teilbaum bzw., falls linker Teilbaum leer, mit dem kleinsten Element aus dem rechten Teilbaum und lösche diesen Knoten
-		\item 
+		\item Knoten wurde gefunden: Ersetze den gefundenen Knoten mit dem größten Element aus dem linken Teilbaum bzw., falls linker Teilbaum leer, mit dem kleinsten Element aus dem rechten Teilbaum und lösche diesen (rekursiv) Knoten
+		\item Falls der zu löschende Knoten ein Blatt ist, lösche es
 	\end{enumerate}
+	
+	Der Quell-Code dazu sieht so aus:\newline
+	
+\begin{lstlisting}[language=erlang,numbers=left]
+deleteBT({E, H, L, R}, D) ->
+  if
+    D > E -> 
+      NewRight = deleteBT(R, D),
+      NewHeight = berechneHoehe(L, NewRight),
+      checkAndRebalance({ E, NewHeight, L, NewRight });
+    D < E ->
+      NewLeft = deleteBT(L, D),
+      NewHeight = berechneHoehe(NewLeft, R),
+      checkAndRebalance({ E, NewHeight, NewLeft, R });
+    D == E ->
+      if
+        H == 1 -> {};
+        not LeftEmpty ->
+          BiggestLeftChild = findBiggest(L),
+          NewLeft = deleteBT(L, BiggestLeftChild),
+          NewHeight = berechneHoehe(NewLeft, R),
+          checkAndRebalance({BiggestLeftChild, NewHeight, NewLeft, R});
+        not RightEmpty ->
+          SmallestRightChild = findSmallest(R),
+          NewRight = deleteBT(R, SmallestRightChild),
+          NewHeight = berechneHoehe(L, NewRight),
+          checkAndRebalance({ SmallestRightChild, NewHeight, L, NewRight })
+      end;
+    true -> {E, H, L, R }
+  end.
+\end{lstlisting}
 
   	\newpage
   	\section{Testumgebung}

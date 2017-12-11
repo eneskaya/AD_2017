@@ -49,7 +49,9 @@ printBT_test() ->
 
 delete_test() ->
   B = avltree:initBT(),
+  ?assert(avltree:equalBT(B, avltree:deleteBT(B, 42))),
   B1 = avltree:insertBT(B, 14),
+  ?assert(avltree:equalBT(B, avltree:deleteBT(B1, 14))),
   B2 = avltree:insertBT(B1, 21),
   B3 = avltree:insertBT(B2, 12),
   B4 = avltree:insertBT(B3, 139),
@@ -60,9 +62,9 @@ delete_test() ->
             {21, 1, {}, {}}, 
             {2019, 1, {}, {}}}
          },
-  ?assert(avltree:isBT(B4)),
+  ?assert(avltree:isBT(B5)),
   ?assert(avltree:isBT(Exp1)),
-  ?assert(avltree:equalBT(B4, Exp1)),
+  ?assert(avltree:equalBT(B5, Exp1)),
   B6 = avltree:deleteBT(B5, 139),
   Exp2 = {14, 3,
             {12, 1, {}, {}},
@@ -72,5 +74,5 @@ delete_test() ->
          },
   ?assert(avltree:isBT(B6)),
   ?assert(avltree:isBT(Exp2)),
-  ?assert(avltree:equalBT(B6, Exp1)).
+  ?assert(avltree:equalBT(B6, Exp2)).
  
