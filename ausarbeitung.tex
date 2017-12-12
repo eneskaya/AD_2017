@@ -5,6 +5,8 @@
 \usepackage{listings}
 \usepackage{graphicx}
 \usepackage{color}
+\usepackage{tikz}
+\usepackage{pgfplots}
 
 \newcommand{\BigO}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
 
@@ -351,6 +353,7 @@ digraph avltree
 	\newpage
 	\subsection{Laufzeitmessungen}
 	In der Theorie wird für den AVL-Baum für Einfüge-, Lösch- und Such-Operationen eine Laufzeit von $O(log*n)$ angegeben. Dies wird anhand dieser Implementierung getestet. Dazu wird eine Test-Umgebung errichtet, welche eine Liste der Größe n mit zufällig gewählten Elementen in einen AVL-Baum einfügt\footnote{siehe Datei experimente.erl}. Es wurden im Mittel die folgenden Zeiten gemessen:
+	
 	
   	\newpage
   	\section{Quellen}
