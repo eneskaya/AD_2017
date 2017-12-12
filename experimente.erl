@@ -10,7 +10,8 @@ getMilliseconds() ->
     (Megasecs * 1000000) + Secs + (Microsecs / 1000000).
 
 startWithCount(Count) ->
-    io:fwrite("~n ----------- ~n"),
+    StartzeitStr = lists:concat(["Startzeit: ", util:timeMilliSecond(), "----------- ~n"]),
+    io:fwrite(StartzeitStr),
     List = util:randomliste(Count),
     B = avltree:initBT(),
     avl_utils:resetCounters(),
@@ -42,7 +43,8 @@ insertRekBTree(B, []) -> B;
 insertRekBTree(B, [H|T]) -> insertRek(btree:insertBT(B, H), T).
 
 startBTWithCount(Count) ->
-    io:fwrite("~n ----------- ~n"),
+    StartzeitStr = lists:concat(["Startzeit: ", util:timeMilliSecond(), "----------- ~n"]),
+    io:fwrite(StartzeitStr),
     List = util:randomliste(Count),
     B = btree:initBT(),
     Start = getMilliseconds(),
